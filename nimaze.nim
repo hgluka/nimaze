@@ -1,4 +1,4 @@
-import random, os, system, strutils
+import random
 
 type
   Map* = object
@@ -102,14 +102,31 @@ proc draw_ascii*(map: Map): bool =
       else: stdout.write "|"
     stdout.write "\n"
 
-if isMainModule:
-  let width = if paramCount() > 0: parseInt paramStr(1)
-               else: 10
-  let height = if paramCount() > 1: parseInt paramStr(2)
-               else: width
-  let seed = if paramCount() > 2: parseInt paramStr(3)
-             else: random high(int)
+when isMainModule:
+  import docopt, strutils
+  let doc = """
+nimaze 0.1.0 by Luka Hadzi-Djokic
 
+Usage:
+  nimaze [-w=<x>|--width=<x>] [-h=<y>|--height=<y>] [-s=<z>|--seed=<z>]
+  nimaze --help
+  nimaze (-v | --version)
+
+Options:
+  -w --width=<x>   Set width of maze [default: 0]
+  -h --height=<y>  Set height of maze [default: 0]
+  -s --seed=<z>    Set seed for prng [default: 0]
+  --help           Show this screen.
+  -v --version     Show version.
+"""
+  let args = docopt(doc, version = "nimaze 0.1.0")
+
+  let width = if parseInt($args["--width"]) != 0: parseInt($args["--width"])
+              else: 10
+  let height = if parseInt($args["--height"]) != 0: parseInt($args["--height"])
+               else: width
+  let seed = if parseInt($args["--seed"]) != 0: parseInt($args["--seed"])
+             else: random high(int)
   randomize seed
   try:
     var map = newMap(width, height)

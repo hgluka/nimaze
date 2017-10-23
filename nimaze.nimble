@@ -9,5 +9,5 @@ bin           = @["nimaze"]
 
 # Dependencies
 
-requires "nim >= 0.17.2"
+requires "nim >= 0.17.2", "docopt >= 0.6.5"
 
