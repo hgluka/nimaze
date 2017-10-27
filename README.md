@@ -40,6 +40,11 @@ ________________________________________
 |_________|_______|_____|___|___________|
 ```
 
+## Testing
+```
+nimble test_all
+```
+
 ## TODO
 * implement other algorithms
 * implement different visualization methods

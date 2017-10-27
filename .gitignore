@@ -1,4 +1,6 @@
 nimcache/
+tests/nimcache/
+bin/
 nimaze
 *.swf
 *.html

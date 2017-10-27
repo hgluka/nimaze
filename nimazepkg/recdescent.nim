@@ -1,5 +1,6 @@
 import random, utils
 
+
 proc recursive_descent*(cx: int, cy: int, map: var Map): bool =
   ## Recursive descent algorithm for carving a maze in a grid
   ##
