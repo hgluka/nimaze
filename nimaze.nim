@@ -1,6 +1,7 @@
 import nimazepkg/utils
 
-proc draw_ascii*(map: Map): bool =
+
+proc drawAscii*(map: Map): bool =
   ## Draw an ascii representation of a maze to stdout
   ##
   ## We only need to draw south and east walls, because
@@ -19,6 +20,7 @@ proc draw_ascii*(map: Map): bool =
                      else: "_"
       else: stdout.write "|"
     stdout.write "\n"
+
 
 when isMainModule:
   import docopt, strutils, random
@@ -50,10 +52,6 @@ Options:
   let seed = if parseInt($args["--seed"]) != 0: parseInt($args["--seed"])
              else: random high(int)
   randomize seed
-  try:
-    var map = newMap(width, height)
-    discard recursive_descent(0, 0, map)
-    discard draw_ascii(map)
-  except OverflowError:
-    let msg = getCurrentExceptionMsg()
-    echo msg
+  var map = newMap(width, height)
+  discard recursive_descent(0, 0, map)
+  discard drawAscii(map)

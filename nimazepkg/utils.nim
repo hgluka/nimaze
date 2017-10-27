@@ -1,3 +1,5 @@
+import seqUtils
+
 type
   Map* = object
     ## Map object
@@ -5,30 +7,36 @@ type
     ## A compile-time array of size 1024x1024
     ## that also holds the height and width attributes,
     ## for smaller grids.
-    grid*: array[0..1024, array[0..1024, int]]
+    grid*: seq[seq[int]]
     width*: int
     height*: int
   Direction* = enum
     N = 1, S = 2, E = 4, W = 8
 
 
-proc newMap*(w, h: int): Map {.raises: [OverflowError].} =
+proc newMap*(w, h: int): Map =
   ## Create new map and initialize cells to zeroes
   ##
   ## Raises OverflowError if width or height is higher than the maximum.
-  var map: Map
+  result.width = w
+  result.height = h
 
-  if w > 66 or h > 66:
-    raise newException(OverflowError, "Invalid width or height")
-  else:
-    map.width = w
-    map.height = h
+  result.grid = newSeqWith(result.width+1, newSeq[int](result.height+1))
 
+  for i in 0..result.width:
+    for j in 0..result.height:
+      result.grid[i][j] = 0
+
+
+proc echoMap*(map: Map): bool =
+  stdout.write "@["
   for i in 0..map.width:
+    stdout.write "@["
     for j in 0..map.height:
-      map.grid[i][j] = 0
+      stdout.write(map.grid[i][j], ",")
+    stdout.write("],\n")
+  stdout.write "]"
 
-  return map
 
 proc DX*(dir: Direction): int =
   ## DX, DY determine the direction for path carving algorithms.
@@ -39,6 +47,7 @@ proc DX*(dir: Direction): int =
   of S: return 0
   else: discard
 
+
 proc DY*(dir: Direction): int =
   ## DX, DY determine the direction for path carving algorithms.
   case dir
@@ -47,6 +56,7 @@ proc DY*(dir: Direction): int =
   of E: return 0
   of W: return 0
   else: discard
+
 
 proc OPPOSITE*(dir: Direction): Direction =
   ## OPPOSITE is useful for obvious reasons.
