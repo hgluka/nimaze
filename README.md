@@ -41,6 +41,7 @@ ________________________________________
 ```
 
 ## Testing
+Run the test suite with
 ```
 nimble test_all
 ```
